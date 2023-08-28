@@ -1,0 +1,40 @@
+# Server Configuration
+server:
+  # port: ${PORT:${SERVER_PORT:0}}
+  port: 8084
+
+# Spring Configuration
+spring:
+  # Application Configuration
+  application:
+    name: msvc-api-gateway
+
+  # Routes Config
+  cloud:
+    gateway:
+      routes:
+        # 01 - User route
+        - id: msvc-user
+          uri: lb://msvc-user
+          predicates:
+            - Path=/user/**
+        # 02 - Person route
+        - id: msvc-person
+          uri: lb://msvc-person
+          predicates:
+            - Path=/person/**
+        # 03 - Customer route
+        - id: msvc-customer
+          uri: lb://msvc-customer
+          predicates:
+            - Path=/customer/**
+
+# Eureka Client
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true

@@ -1,0 +1,44 @@
+# Server Configuration
+server:
+  # port: ${PORT:${SERVER_PORT:0}}
+  port: 8081
+
+# Spring Configuration
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3407/msvc_user
+    username: USER_ADMIN
+    password: S3cr3t2023_MySQL
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # JPA Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate: jdbc.lob.non_contextual_creation=true
+
+  # Application Configuration
+  application:
+    name: msvc-user
+
+  # Config server
+  config:
+    import: optional:configserver:http://localhost:8085
+
+# Eureka Client
+# eureka:
+  # client:
+    # service-url:
+      # defaultZone: http://localhost:8761/eureka/
+    # healthcheck:
+      # enabled: true
+    # fetch-registry: true
+    # register-with-eureka: true
+  # instance:
+    # prefer-ip-address: true
+    # instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    # statusPageUrlPath: ${server.servletPath}/info
+    # healthCheckUrlPath: ${server.servletPath}/health
+    # homePageUrl: ${eureka.hostname}/

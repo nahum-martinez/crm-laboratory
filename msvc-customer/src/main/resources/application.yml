@@ -1,0 +1,28 @@
+# Server Configuration
+server:
+  # port: ${PORT:${SERVER_PORT:0}}
+  port: 8081
+
+# Spring Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5533/msvc_customer?serverTimezone=America/Tegucigalpa&allowPublicRetrieval=false
+    username: USER_ADMIN
+    password: S3cr3t2023_POSTGRES
+    driver-class-name: org.postgresql.Driver
+
+  # JPA Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate: jdbc.lob.non_contextual_creation=true
+
+  # Application Configuration
+  application:
+    name: msvc-customer
+
+  # Config server
+  config:
+    import: optional:configserver:http://localhost:8085

@@ -1,0 +1,83 @@
+version: "3.9"
+
+name: general-services
+
+# Services Configuration
+services:
+# Admin Services *******************************************************************************************
+# 00 - Portainer DB Definition  
+  service-portainer:
+    image: portainer/portainer-ce:alpine
+    container_name: service-portainer
+    restart: unless-stopped
+    ports:
+      - "9443:9443"
+    volumes:
+      - service-portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      
+# Databases Services ****************************************************************************************
+  # 01 - Users DB
+  user-db:
+    image: mysql:8.0.18
+    container_name: user-db-mysql
+    ports:
+      - "3407:3306"
+    environment:
+      MYSQL_DATABASE: msvc_user
+      MYSQL_USER: USER_ADMIN
+      MYSQL_PASSWORD: S3cr3t2023_MySQL
+      MYSQL_ROOT_PASSWORD: S3cr3t2023_MySQL
+    volumes:
+      - data-user-service:/var/lib/mysql
+    restart: always
+    networks:
+      - spring-crm
+
+  # 02 - Person DB
+  person-db:
+    image: mysql:8.0.18
+    container_name: person-db-mysql
+    ports:
+      - "3508:3306"
+    environment:
+      MYSQL_DATABASE: msvc_person
+      MYSQL_USER: USER_ADMIN
+      MYSQL_PASSWORD: S3cr3t2023_MySQL
+      MYSQL_ROOT_PASSWORD: S3cr3t2023_MySQL
+    volumes:
+      - data-person-service:/var/lib/mysql
+    restart: always
+    networks:
+      - spring-crm
+  # 03 - Customer DB
+  customer-db:
+    image: postgres:14-alpine3.18
+    container_name: customer-db-postgres
+    ports:
+      - "5533:5432"
+    environment:
+      POSTGRES_DB: msvc_customer
+      POSTGRES_USER: USER_ADMIN
+      POSTGRES_PASSWORD: S3cr3t2023_POSTGRES
+    volumes:
+      - data-customer-service:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - spring-crm
+
+# Volumes Configuration ************************************************************************************
+volumes:
+  service-portainer:
+    name: service-portainer
+  data-user-service:
+    name: data-user-service
+  data-person-service:
+    name: data-person-service
+  data-customer-service:
+    name: data-customer-service
+  
+# Network Configuration ************************************************************************************
+networks:
+  spring-crm:
+    name: spring-crm

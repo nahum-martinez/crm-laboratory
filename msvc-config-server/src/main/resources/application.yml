@@ -1,0 +1,14 @@
+# Server Configuration
+server:
+  port: 8085
+
+# Spring Configuration
+spring:
+  application:
+    name: msvc-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/nahum-martinez/msvc-config.git
+          clone-on-start: true
